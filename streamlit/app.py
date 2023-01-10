@@ -5,19 +5,427 @@ from streamlit_option_menu import option_menu
 from PIL import Image
 import json
 
+def dashboard_markup():
+    return """
+    <div class="contents">
+    <div class="row3">
+        <div class="column3_1">
+            <div class="row">
+                <div class="column">
+                    <div class="graph">
+                        <canvas id="barTicketSaleCount"></canvas>
+                    </div>
+                    <div class="graph">
+                        <canvas id="doughnutProfitShare"></canvas>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="graph">
+                        <canvas id="barTicketProfit"></canvas>
+                    </div>
+                    <div class="graph">
+                        <canvas id="doughnutAudienceShare"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="row height2">
+                <div class="graph">
+                    <canvas id="lineYearAccumulate"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="column3_2">
+            <div class="row">
+                <div class="graph">
+                    <canvas id="saleForDay"></canvas>
+                </div>
+            </div>
+            <div class="row">
+                <div class="graph">
+                    <canvas id="lineYearTicketAccumulate"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="column3_3">
+            <div class="row">
+                <div class="graph">
+                    <canvas id="barWinnerRank"></canvas>
+                </div>
+            </div>
+            <div class="row">
+                <div class="graph">
+                    <canvas id="barShowCountRank"></canvas>
+                </div>
+            </div>
+            <div class="row">
+                <div class="graph">
+                    <canvas id="scatterRelative"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    """
+
+def dashboard_style():
+    return """
+    .column3_1 {
+  float: left;
+  width: 31%;
+}
+
+.column3_2 {
+  float: left;
+  width: 38.5%;
+}
+
+.column3_3 {
+  float: left;
+  width: 25.5%;
+}
+
+/* Clear floats after the columns */
+.row3:after {
+  content: "";
+  display: block;
+  clear: both;
+  height: 100%
+}
+
+.column {
+  float: left;
+  width: 50%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: block;
+  clear: both;
+  height: 100%
+}
+
+.graph {
+}
+
+.contents {
+    height: 100%
+}
+
+    """
+
+def dashboard_bar_ticket_sale_count(label, data):
+    return """
+    <script>
+    const barTicketSaleCount = document.getElementById('barTicketSaleCount');
+    new Chart(barTicketSaleCount, {
+        type: 'bar',
+        data: {
+            labels: """ + str(label) + """,
+            datasets: [
+                {
+                    label: '티켓 판매수',
+                    data: """ + str(data) + """,
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    </script>
+    """
+
+def dashboard_bar_ticket_sale_profit(label, data):
+    return """
+    <script>
+    const barTicketProfit = document.getElementById('barTicketProfit');
+    new Chart(barTicketProfit, {
+        type: 'bar',
+        data: {
+            labels: """ + str(label) +""",
+            datasets: [{
+                label: '티켓 판매액',
+                data: """ + str(data) + """,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    </script>
+    """
+def dashboard_doughnut_ticket_profit_share(label, data):
+    return """
+    <script>
+    const doughnutProfitShare = document.getElementById('doughnutProfitShare');
+    new Chart(doughnutProfitShare, {
+        type: 'doughnut',
+        data: {
+            labels: """ + str(label) +""",
+            datasets: [{
+                label: '판매액 점유율',
+                data: """ + str(data) + """,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false,
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: '판매액 점유율'
+                }
+            }
+        },
+    });
+    </script>
+    """
+
+def dashboard_doughnut_ticket_audience_share(label, data):
+    return """
+    <script>
+    const doughnutAudienceShare = document.getElementById('doughnutAudienceShare');
+    new Chart(doughnutAudienceShare, {
+        type: 'doughnut',
+        data: {
+            labels: """ + str(label) +""",
+            datasets: [{
+                label: '관객 점유율',
+                data: """ + str(data) + """,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false,
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: '관객 점유율'
+                }
+            }
+        },
+    });
+    </script>
+    """
+
+def dashboard_line_year_accumulate(label, data):
+    return """
+    <script>
+    const lineYearAccumulate = document.getElementById('lineYearAccumulate');
+    new Chart(lineYearAccumulate, {
+        type: 'line',
+        data: {
+        labels: ['2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023'],
+        datasets: [
+            {
+                label: '년도별 공연 누적 현황',
+                data:[100,200,300,400,200,100,600,700],
+            },
+        ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: '년도별 공연 누적 현황'
+                }
+            }
+        },
+    });
+    </script>
+    """
+
+def dashboard_bar_sale_for_day(label, data):
+    return """
+    <script>
+    const saleForDay = document.getElementById('saleForDay');
+    new Chart(saleForDay, {
+        type: 'bar',
+        data: {
+            labels: """ + str(label) +""",
+            datasets: [
+                {
+                    label: '요일별 티켓 판매 현황',
+                    data: """ + str(data) + """,
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    </script>
+    """
+
+def dashboard_line_year_tickt_accumulate(label, data):
+    return """
+    <script>
+    const lineYearTicketAccumulate = document.getElementById('lineYearTicketAccumulate');
+    new Chart(lineYearTicketAccumulate, {
+        type: 'line',
+        data: {
+            labels: ['a','b','c','d','e','f','g'],
+            datasets: [
+                {
+                    label: 'Dataset 1',
+                    data:[-100,2,3,40,5,60,7],
+                },
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: '년도 별 티켓 판매 현황'
+                }
+            }
+        },
+    });
+    </script>
+    """
+
+def dashboard_bar_winner_rank(label, data):
+    return """
+    <script>
+    const barWinnerRank = document.getElementById('barWinnerRank');
+    new Chart(barWinnerRank, {
+        type: 'bar',
+        data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+                label: '공연장 별 수상작 공연 횟수 랭킹',
+                data: [12, 19, 3, 5, 2, 3],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    </script>
+    """
+
+def dashboard_bar_show_count_rank(label, data):
+    return """
+    <script>
+    const barShowCountRank = document.getElementById('barShowCountRank');
+    new Chart(barShowCountRank, {
+        type: 'bar',
+        data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+                label: '뮤지컬 공연 상연 횟수 랭킹',
+                data: [12, 19, 3, 5, 2, 3],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    </script>
+    """
+
+def dashboard_scatter_relative(label, data):
+    return """
+    <script>
+    const scatterRelative = document.getElementById('scatterRelative');
+    new Chart(scatterRelative, {
+        type: 'scatter',
+        data: {
+            datasets: [{
+                label: 'Scatter Dataset',
+                data: [{
+                  x: -10,
+                  y: 0
+                }, {
+                  x: 0,
+                  y: 10
+                }, {
+                  x: 10,
+                  y: 5
+                }, {
+                  x: 0.5,
+                  y: 5.5
+                }],
+                backgroundColor: 'rgb(255, 99, 132)'
+            }]
+        },
+        options: {
+            scales: {
+              x: {
+                type: 'linear',
+                position: 'bottom'
+              }
+            },
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: '공연 기간 / 상연 횟수 상관관계'
+                }
+            }
+        },
+    });
+    </script>
+    """
+
+def open_json_file(src_file):
+    return_json_dict = {}
+    with open(src_file, "r", encoding="utf-8") as f:
+        return_json_dict = json.load(f)
+    return return_json_dict
+
 performance_list = pd.read_json("../data/performance_list.json")
 performance_ranking = pd.read_json("../data/performance_ranking.json")
 festival_list = pd.read_json("../data/festival_list.json")
 
-
-with open("../data/performance_years_data.json", "r", encoding="utf-8") as f:
-
-    year_data = json.load(f)
-
-
-with open("../data/statistics_data.json", "r", encoding="utf-8") as f:
-
-    statistics_data = json.load(f)
+year_data = open_json_file("../data/performance_years_data.json")
+statistics_data = open_json_file("../data/statistics_data.json")
+daily_ticket_sales = open_json_file("../data/daily_ticket_sales.json")
+day_ticket_counter = open_json_file("../data/day_ticket_sales_counter.json")
+count_by_hall_rank = open_json_file("../data/count_by_hall_ranking.json")
+whole_seoul_musical = open_json_file("../data/whole_seoul_musical.json")
+scatter_result = open_json_file("../data/scatter_result.json")
 
 performance_count = pd.read_json("../data/performance_years_data.json")
 performance_count.rename(index={"year2016": "2016", "year2017": "2017", "year2018": "2018",
@@ -337,11 +745,41 @@ if choose == "공연 차트":
 
         components.html(html, width=1000, height=1000)
 
-    if choice == "대시보드":
-        
-        html = ""
-        
-        
-        
-        
-        # components.html(html, width=1000, height=1000)
+if choose == "대시보드":
+
+    daily_ticket_sales_labels = []
+    daily_ticket_sales_nums = []
+    daily_ticket_profit = []
+    daily_ticket_profit_share = []
+    daily_ticket_audience_share = []
+    total_profit = 0
+    for k, v in daily_ticket_sales.items():
+        daily_ticket_sales_labels.append(k)
+        daily_ticket_sales_nums.append(v["티켓판매수"])
+        daily_ticket_profit.append(v["티켓판매액"])
+        total_profit += int(v["티켓판매액"])
+        daily_ticket_audience_share.append(v["관객점유율"])
+    for v in daily_ticket_profit:
+        daily_ticket_profit_share.append((int(v) / total_profit) * 100)
+
+    week_sale_labels = []
+    week_sale_profit = []
+    for k, v in day_ticket_counter.items():
+        week_sale_labels.append(k)
+        week_sale_profit.append(float(v["티켓판매액"]))
+
+    style = "<style>" + dashboard_style() + "</style>"
+    script = ""
+    script += dashboard_bar_ticket_sale_count(daily_ticket_sales_labels, daily_ticket_sales_nums)
+    script += dashboard_bar_ticket_sale_profit(daily_ticket_sales_labels, daily_ticket_profit)
+    script += dashboard_doughnut_ticket_profit_share(daily_ticket_sales_labels, daily_ticket_profit_share)
+    script += dashboard_doughnut_ticket_audience_share(daily_ticket_sales_labels, daily_ticket_audience_share)
+    script += dashboard_line_year_accumulate([], [])
+    script += dashboard_bar_sale_for_day(week_sale_labels, week_sale_profit)
+    script += dashboard_line_year_tickt_accumulate([], [])
+    script += dashboard_bar_winner_rank([], [])
+    script += dashboard_bar_show_count_rank([], [])
+    script += dashboard_scatter_relative([], [])
+    html = style + dashboard_markup() + script
+
+    components.html(html, width=1500, height=800)
