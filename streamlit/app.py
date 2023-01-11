@@ -8,33 +8,33 @@ import random
 
 def dashboard_markup():
     return """
-<div class="container-fluid" style="width: 2500px">
+<div class="container-fluid" style="width: 2800px">
   <div class="row">
-    <div class="col-4">
+    <div class="col-3">
       <div class="row">
         <div class="col-12">
-          <h5 style="margin: 30px; text-align: center;"> 일일 티켓 판매 현황 </h5>
+          <h5 style="margin: 52px; text-align: center;"> 일일 티켓 판매 현황 </h5>
         </div>
         <div class="col-6">
-          <div class="card" style="width: 100%;">
+          <div class="card" style="width: 340px">
             <div class="card-body">
-              <div class="graph">
-                <canvas id="barTicketSaleCount" width="350" height="300"></canvas>
+              <div class="graph" style="margin-top: 35px;">
+                <canvas id="barTicketSaleCount" width="300" height="220"></canvas>
               </div>
-              <div class="graph">
-                <canvas id="doughnutProfitShare"></canvas>
+              <div class="graph" style="margin-top: 30px; margin-bottom: 50px;">
+                <canvas id="doughnutProfitShare" width="300" height="240"></canvas>
               </div>
             </div>
           </div>
         </div>
         <div class="col-6">
-          <div class="card" style="width: 100%;">
+          <div class="card" style="width: 340px">
             <div class="card-body">
-              <div class="graph">
-                <canvas id="barTicketProfit" width="350" height="300"></canvas>
+              <div class="graph" style="margin-top: 35px;">
+                <canvas id="barTicketProfit" width="300" height="220"></canvas>
               </div>
-              <div class="graph">
-                <canvas id="doughnutAudienceShare"></canvas>
+              <div class="graph" style="margin-top: 30px; margin-bottom: 50px;">
+                <canvas id="doughnutAudienceShare" width="300" height="240"></canvas>
               </div>
             </div>
           </div>
@@ -42,14 +42,14 @@ def dashboard_markup():
       </div>
     </div>
     <div class="col-2">
-      <div class="card mg-20" style="width: 100%; height: 355px;">
+      <div class="card mg-20" style="width: 100%; height: 370px;">
         <div class="card-body">
             <div class="graph">
-              <canvas id="lineYearAccumulate" width="350" height="300"></canvas>
+              <canvas id="lineYearAccumulate" width="365" height="300"></canvas>
             </div>
         </div>
       </div>
-      <div class="card mg-20" style="width: 100%; height: 355px;">
+      <div class="card mg-20" style="width: 100%; height: 370px;">
         <div class="card-body">
           <div class="graph">
             <canvas id="lineYearTicketAccumulate" width="350" height="300"></canvas>
@@ -58,14 +58,14 @@ def dashboard_markup():
       </div>
     </div>
     <div class="col-2">
-      <div class="card mg-20" style="width: 100%;height: 355px;">
+      <div class="card mg-20" style="width: 100%;height: 370px;">
         <div class="card-body">
           <div class="graph">
             <canvas id="saleForDay" width="350" height="300"></canvas>
           </div>
         </div>
       </div>
-      <div class="card mg-20" style="width: 100%;height: 355px;">
+      <div class="card mg-20" style="width: 100%;height: 370px;">
         <div class="card-body">
           <div class="graph">
             <canvas id="barWinnerRank" width="350" height="300"></canvas>
@@ -77,7 +77,7 @@ def dashboard_markup():
       <div class="card mg-20" style="width: 540px">
         <div class="card-body">
           <div class="graph">
-            <canvas id="scatterRelative" width="500" height="675"></canvas>
+            <canvas id="scatterRelative" width="500" height="700"></canvas>
           </div>
         </div>
       </div>
@@ -91,7 +91,7 @@ def dashboard_style():
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <style>
   .mg-20 {
-    margin: 5px;
+    margin: 3px;
   }
 </style>
     """
@@ -121,6 +121,7 @@ def dashboard_bar_ticket_sale_count(label, data):
             ]
         },
         options: {
+            responsive: false,
             scales: {
                 y: {
                     beginAtZero: true
@@ -146,6 +147,7 @@ def dashboard_bar_ticket_sale_profit(label, data):
             }]
         },
         options: {
+            responsive: false,
             scales: {
                 y: {
                     beginAtZero: true
@@ -216,18 +218,25 @@ def dashboard_doughnut_ticket_audience_share(label, data):
     """
 
 def dashboard_line_year_accumulate(label, data):
+
+    datasets = ""
+    for k, v in data.items():
+        datasets += """
+        {
+            label: '""" + str(k) + """',
+            data: """ + str(v) + """,
+        },
+        """
+
     return """
     <script>
     const lineYearAccumulate = document.getElementById('lineYearAccumulate');
     new Chart(lineYearAccumulate, {
         type: 'line',
         data: {
-        labels: ['2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023'],
+        labels: """ + str(label) + """,
         datasets: [
-            {
-                label: '년도별 공연 누적 현황',
-                data:[100,200,300,400,200,100,600,700],
-            },
+            """ + str(datasets) + """
         ]
         },
         options: {
@@ -273,7 +282,16 @@ def dashboard_bar_sale_for_day(label, data):
     </script>
     """
 
-def dashboard_line_year_tickt_accumulate(label, play, mus, classic, opera, dance, korea, etc):
+def dashboard_line_year_tickt_accumulate(label, data):
+    datasets = ""
+    for k,v in data:
+        datasets += """
+        {
+            label: '""" + str(k) + """',
+            data: """ + str(v) + """,
+        },
+        """
+
     return """
     <script>
     const lineYearTicketAccumulate = document.getElementById('lineYearTicketAccumulate');
@@ -282,34 +300,7 @@ def dashboard_line_year_tickt_accumulate(label, play, mus, classic, opera, dance
         data: {
             labels: """+ str(label) +""",
             datasets: [
-                {
-                    label: '""" + str(play[0]) + """',
-                    data: """ + str(play[1]) + """,
-                },
-                {
-                    label: '""" + str(mus[0]) + """',
-                    data: """ + str(mus[1]) + """,
-                },
-                {
-                    label: '""" + str(classic[0]) + """',
-                    data: """ + str(classic[1]) + """,
-                },
-                {
-                    label: '""" + str(opera[0]) + """',
-                    data: """ + str(opera[1]) + """,
-                },
-                {
-                    label: '""" + str(dance[0]) + """',
-                    data: """ + str(dance[1]) + """,
-                },
-                {
-                    label: '""" + str(korea[0]) + """',
-                    data: """ + str(korea[1]) + """,
-                },
-                {
-                    label: '""" + str(etc[0]) + """',
-                    data: """ + str(etc[1]) + """,
-                },
+                """ + str(datasets) +"""
             ]
         },
         options: {
@@ -432,6 +423,7 @@ performance_list = pd.read_json("../data/performance_list.json")
 performance_ranking = pd.read_json("../data/performance_ranking.json")
 festival_list = pd.read_json("../data/festival_list.json")
 
+new_year_data = open_json_file("../new_data/performance_years_data.json")
 year_data = open_json_file("../data/performance_years_data.json")
 statistics_data = open_json_file("../new_data/statistics_data.json")
 daily_ticket_sales = open_json_file("../new_data/daily_ticket_sales.json")
@@ -780,20 +772,26 @@ if choose == "대시보드":
     script += dashboard_bar_sale_for_day(d_t_c_labels, d_t_c_count)
 
     y_t_a_labels = statistics_data["years"]
-    y_t_a_profit = []
-    y_t_a_profit_play = ("연극", statistics_data["티켓판매액"]["연극"])
-    y_t_a_profit_mus = ("뮤지컬", statistics_data["티켓판매액"]["뮤지컬"])
-    y_t_a_profit_classic = ("클래식", statistics_data["티켓판매액"]["클래식"])
-    y_t_a_profit_opera = ("오페라", statistics_data["티켓판매액"]["오페라"])
-    y_t_a_profit_dance = ("무용", statistics_data["티켓판매액"]["무용"])
-    y_t_a_profit_korea = ("국악", statistics_data["티켓판매액"]["국악"])
-    y_t_a_profit_etc = ("복합", statistics_data["티켓판매액"]["복합"])
+
+    target = "티켓판매액"
+    y_t_a_datasets = []
+    with st.sidebar:
+        choice = st.selectbox(
+            "년도별 티켓 판매 현황",
+            ("티켓판매액", "티켓판매수")
+        )
+        y_t_a_datasets = [
+            ("연극", statistics_data[choice]["연극"]),
+            ("뮤지컬", statistics_data[choice]["뮤지컬"]),
+            ("클래식", statistics_data[choice]["클래식"]),
+            ("오페라", statistics_data[choice]["오페라"]),
+            ("무용", statistics_data[choice]["무용"]),
+            ("국악", statistics_data[choice]["국악"]),
+            ("복합", statistics_data[choice]["복합"])
+        ]
 
     script += dashboard_line_year_tickt_accumulate(
-        y_t_a_labels, y_t_a_profit_play, y_t_a_profit_mus,
-        y_t_a_profit_classic, y_t_a_profit_opera,
-        y_t_a_profit_dance, y_t_a_profit_korea,
-        y_t_a_profit_etc
+        y_t_a_labels, y_t_a_datasets
     )
 
     w_s_m_labels = whole_seoul_musical["공연명"]
@@ -811,7 +809,20 @@ if choose == "대시보드":
     ]
     script += dashboard_scatter_relative(s_c_r_dataset)
 
-    script += dashboard_line_year_accumulate([], [])
+    location_list = []
+    select_data = {}
+    year_labels = new_year_data['years']
+    for location, v in new_year_data.items():
+        if location != 'years':
+            location_list.append(location)
+    with st.sidebar:
+        choice = st.selectbox(
+            "지역별 분류",
+            location_list
+        )
+        select_data = new_year_data[choice]
+
+    script += dashboard_line_year_accumulate(year_labels, select_data)
     script += dashboard_bar_show_count_rank([], [])
 
     html = style + dashboard_markup() + script
