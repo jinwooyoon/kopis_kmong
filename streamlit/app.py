@@ -4,115 +4,104 @@ import pandas as pd
 from streamlit_option_menu import option_menu
 from PIL import Image
 import json
+import random
 
 def dashboard_markup():
     return """
-    <div class="contents">
-    <div class="row3">
-        <div class="column3_1">
-            <div class="row">
-                <div class="column">
-                    <div class="graph">
-                        <canvas id="barTicketSaleCount"></canvas>
-                    </div>
-                    <div class="graph">
-                        <canvas id="doughnutProfitShare"></canvas>
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="graph">
-                        <canvas id="barTicketProfit"></canvas>
-                    </div>
-                    <div class="graph">
-                        <canvas id="doughnutAudienceShare"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="row height2">
-                <div class="graph">
-                    <canvas id="lineYearAccumulate"></canvas>
-                </div>
-            </div>
+<div class="container-fluid" style="width: 2500px">
+  <div class="row">
+    <div class="col-4">
+      <div class="row">
+        <div class="col-12">
+          <h5 style="margin: 30px; text-align: center;"> 일일 티켓 판매 현황 </h5>
         </div>
-        <div class="column3_2">
-            <div class="row">
-                <div class="graph">
-                    <canvas id="saleForDay"></canvas>
-                </div>
+        <div class="col-6">
+          <div class="card" style="width: 100%;">
+            <div class="card-body">
+              <div class="graph">
+                <canvas id="barTicketSaleCount" width="350" height="300"></canvas>
+              </div>
+              <div class="graph">
+                <canvas id="doughnutProfitShare"></canvas>
+              </div>
             </div>
-            <div class="row">
-                <div class="graph">
-                    <canvas id="lineYearTicketAccumulate"></canvas>
-                </div>
-            </div>
+          </div>
         </div>
-        <div class="column3_3">
-            <div class="row">
-                <div class="graph">
-                    <canvas id="barWinnerRank"></canvas>
-                </div>
+        <div class="col-6">
+          <div class="card" style="width: 100%;">
+            <div class="card-body">
+              <div class="graph">
+                <canvas id="barTicketProfit" width="350" height="300"></canvas>
+              </div>
+              <div class="graph">
+                <canvas id="doughnutAudienceShare"></canvas>
+              </div>
             </div>
-            <div class="row">
-                <div class="graph">
-                    <canvas id="barShowCountRank"></canvas>
-                </div>
-            </div>
-            <div class="row">
-                <div class="graph">
-                    <canvas id="scatterRelative"></canvas>
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
     </div>
+    <div class="col-2">
+      <div class="card mg-20" style="width: 100%; height: 355px;">
+        <div class="card-body">
+            <div class="graph">
+              <canvas id="lineYearAccumulate" width="350" height="300"></canvas>
+            </div>
+        </div>
+      </div>
+      <div class="card mg-20" style="width: 100%; height: 355px;">
+        <div class="card-body">
+          <div class="graph">
+            <canvas id="lineYearTicketAccumulate" width="350" height="300"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-2">
+      <div class="card mg-20" style="width: 100%;height: 355px;">
+        <div class="card-body">
+          <div class="graph">
+            <canvas id="saleForDay" width="350" height="300"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="card mg-20" style="width: 100%;height: 355px;">
+        <div class="card-body">
+          <div class="graph">
+            <canvas id="barWinnerRank" width="350" height="300"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card mg-20" style="width: 540px">
+        <div class="card-body">
+          <div class="graph">
+            <canvas id="scatterRelative" width="500" height="675"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     """
 
 def dashboard_style():
     return """
-    .column3_1 {
-  float: left;
-  width: 31%;
-}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<style>
+  .mg-20 {
+    margin: 5px;
+  }
+</style>
+    """
 
-.column3_2 {
-  float: left;
-  width: 38.5%;
-}
-
-.column3_3 {
-  float: left;
-  width: 25.5%;
-}
-
-/* Clear floats after the columns */
-.row3:after {
-  content: "";
-  display: block;
-  clear: both;
-  height: 100%
-}
-
-.column {
-  float: left;
-  width: 50%;
-}
-
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: block;
-  clear: both;
-  height: 100%
-}
-
-.graph {
-}
-
-.contents {
-    height: 100%
-}
-
+def dashboard_script():
+    return """
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     """
 
 def dashboard_bar_ticket_sale_count(label, data):
@@ -180,7 +169,7 @@ def dashboard_doughnut_ticket_profit_share(label, data):
             }]
         },
         options: {
-            responsive: true,
+            responsive: false,
             plugins: {
                 legend: {
                     display: false,
@@ -210,7 +199,7 @@ def dashboard_doughnut_ticket_audience_share(label, data):
             }]
         },
         options: {
-            responsive: true,
+            responsive: false,
             plugins: {
                 legend: {
                     display: false,
@@ -242,7 +231,7 @@ def dashboard_line_year_accumulate(label, data):
         ]
         },
         options: {
-            responsive: true,
+            responsive: false,
             plugins: {
                 legend: {
                     position: 'top',
@@ -284,18 +273,42 @@ def dashboard_bar_sale_for_day(label, data):
     </script>
     """
 
-def dashboard_line_year_tickt_accumulate(label, data):
+def dashboard_line_year_tickt_accumulate(label, play, mus, classic, opera, dance, korea, etc):
     return """
     <script>
     const lineYearTicketAccumulate = document.getElementById('lineYearTicketAccumulate');
     new Chart(lineYearTicketAccumulate, {
         type: 'line',
         data: {
-            labels: ['a','b','c','d','e','f','g'],
+            labels: """+ str(label) +""",
             datasets: [
                 {
-                    label: 'Dataset 1',
-                    data:[-100,2,3,40,5,60,7],
+                    label: '""" + str(play[0]) + """',
+                    data: """ + str(play[1]) + """,
+                },
+                {
+                    label: '""" + str(mus[0]) + """',
+                    data: """ + str(mus[1]) + """,
+                },
+                {
+                    label: '""" + str(classic[0]) + """',
+                    data: """ + str(classic[1]) + """,
+                },
+                {
+                    label: '""" + str(opera[0]) + """',
+                    data: """ + str(opera[1]) + """,
+                },
+                {
+                    label: '""" + str(dance[0]) + """',
+                    data: """ + str(dance[1]) + """,
+                },
+                {
+                    label: '""" + str(korea[0]) + """',
+                    data: """ + str(korea[1]) + """,
+                },
+                {
+                    label: '""" + str(etc[0]) + """',
+                    data: """ + str(etc[1]) + """,
                 },
             ]
         },
@@ -322,10 +335,10 @@ def dashboard_bar_winner_rank(label, data):
     new Chart(barWinnerRank, {
         type: 'bar',
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            labels: """+ str(label) + """,
             datasets: [{
                 label: '공연장 별 수상작 공연 횟수 랭킹',
-                data: [12, 19, 3, 5, 2, 3],
+                data: """ + str(data) + """,
                 borderWidth: 1
             }]
         },
@@ -365,30 +378,30 @@ def dashboard_bar_show_count_rank(label, data):
     </script>
     """
 
-def dashboard_scatter_relative(label, data):
+def dashboard_scatter_relative(data):
+
+    dataset = ""
+    for v in data:
+        r = random.randrange(1, 255)
+        g = random.randrange(1, 255)
+        b = random.randrange(1, 255)
+        dataset += """
+        {
+            label: '""" + str(v[0]) + """',
+            data: """ + str(v[1]) + """,
+            backgroundColor: 'rgb(""" + str(r) + """, """ + str(g) + """, """ + str(b) + """)'
+        },
+        """
+
     return """
     <script>
     const scatterRelative = document.getElementById('scatterRelative');
     new Chart(scatterRelative, {
         type: 'scatter',
         data: {
-            datasets: [{
-                label: 'Scatter Dataset',
-                data: [{
-                  x: -10,
-                  y: 0
-                }, {
-                  x: 0,
-                  y: 10
-                }, {
-                  x: 10,
-                  y: 5
-                }, {
-                  x: 0.5,
-                  y: 5.5
-                }],
-                backgroundColor: 'rgb(255, 99, 132)'
-            }]
+            datasets: [
+            """ + dataset + """
+            ]
         },
         options: {
             scales: {
@@ -420,11 +433,11 @@ performance_ranking = pd.read_json("../data/performance_ranking.json")
 festival_list = pd.read_json("../data/festival_list.json")
 
 year_data = open_json_file("../data/performance_years_data.json")
-statistics_data = open_json_file("../data/statistics_data.json")
-daily_ticket_sales = open_json_file("../data/daily_ticket_sales.json")
-day_ticket_counter = open_json_file("../data/day_ticket_sales_counter.json")
+statistics_data = open_json_file("../new_data/statistics_data.json")
+daily_ticket_sales = open_json_file("../new_data/daily_ticket_sales.json")
+day_ticket_counter = open_json_file("../new_data/day_ticket_counter.json")
 count_by_hall_rank = open_json_file("../data/count_by_hall_ranking.json")
-whole_seoul_musical = open_json_file("../data/whole_seoul_musical.json")
+whole_seoul_musical = open_json_file("../new_data/whole_seoul_musical.json")
 scatter_result = open_json_file("../data/scatter_result.json")
 
 performance_count = pd.read_json("../data/performance_years_data.json")
@@ -747,39 +760,60 @@ if choose == "공연 차트":
 
 if choose == "대시보드":
 
-    daily_ticket_sales_labels = []
-    daily_ticket_sales_nums = []
-    daily_ticket_profit = []
-    daily_ticket_profit_share = []
-    daily_ticket_audience_share = []
-    total_profit = 0
-    for k, v in daily_ticket_sales.items():
-        daily_ticket_sales_labels.append(k)
-        daily_ticket_sales_nums.append(v["티켓판매수"])
-        daily_ticket_profit.append(v["티켓판매액"])
-        total_profit += int(v["티켓판매액"])
-        daily_ticket_audience_share.append(v["관객점유율"])
-    for v in daily_ticket_profit:
-        daily_ticket_profit_share.append((int(v) / total_profit) * 100)
+    style = dashboard_style()
+    script = dashboard_script()
 
-    week_sale_labels = []
-    week_sale_profit = []
-    for k, v in day_ticket_counter.items():
-        week_sale_labels.append(k)
-        week_sale_profit.append(float(v["티켓판매액"]))
+    d_t_s_lables = daily_ticket_sales["장르"]
+    d_t_s_count = daily_ticket_sales["티켓판매수"]
+    script += dashboard_bar_ticket_sale_count(d_t_s_lables, d_t_s_count)
+    d_t_s_profit = daily_ticket_sales["티켓판매액"]
+    script += dashboard_bar_ticket_sale_profit(d_t_s_lables, d_t_s_profit)
 
-    style = "<style>" + dashboard_style() + "</style>"
-    script = ""
-    script += dashboard_bar_ticket_sale_count(daily_ticket_sales_labels, daily_ticket_sales_nums)
-    script += dashboard_bar_ticket_sale_profit(daily_ticket_sales_labels, daily_ticket_profit)
-    script += dashboard_doughnut_ticket_profit_share(daily_ticket_sales_labels, daily_ticket_profit_share)
-    script += dashboard_doughnut_ticket_audience_share(daily_ticket_sales_labels, daily_ticket_audience_share)
+    d_t_s_profit_share = daily_ticket_sales["티켓점유율"]
+    script += dashboard_doughnut_ticket_profit_share(d_t_s_lables, d_t_s_profit_share)
+    d_t_s_audience_share = daily_ticket_sales["관객점유율"]
+    script += dashboard_doughnut_ticket_audience_share(d_t_s_lables, d_t_s_audience_share)
+
+
+    d_t_c_labels = day_ticket_counter["day"]
+    d_t_c_count = day_ticket_counter["티켓판매수"]
+    script += dashboard_bar_sale_for_day(d_t_c_labels, d_t_c_count)
+
+    y_t_a_labels = statistics_data["years"]
+    y_t_a_profit = []
+    y_t_a_profit_play = ("연극", statistics_data["티켓판매액"]["연극"])
+    y_t_a_profit_mus = ("뮤지컬", statistics_data["티켓판매액"]["뮤지컬"])
+    y_t_a_profit_classic = ("클래식", statistics_data["티켓판매액"]["클래식"])
+    y_t_a_profit_opera = ("오페라", statistics_data["티켓판매액"]["오페라"])
+    y_t_a_profit_dance = ("무용", statistics_data["티켓판매액"]["무용"])
+    y_t_a_profit_korea = ("국악", statistics_data["티켓판매액"]["국악"])
+    y_t_a_profit_etc = ("복합", statistics_data["티켓판매액"]["복합"])
+
+    script += dashboard_line_year_tickt_accumulate(
+        y_t_a_labels, y_t_a_profit_play, y_t_a_profit_mus,
+        y_t_a_profit_classic, y_t_a_profit_opera,
+        y_t_a_profit_dance, y_t_a_profit_korea,
+        y_t_a_profit_etc
+    )
+
+    w_s_m_labels = whole_seoul_musical["공연명"]
+    w_s_m_play_count = whole_seoul_musical["상연횟수"]
+    script += dashboard_bar_winner_rank(w_s_m_labels, w_s_m_play_count)
+
+    s_c_r_dataset = [
+        ["연극", scatter_result["연극"]],
+        ["뮤지컬", scatter_result["뮤지컬"]],
+        ["클래식", scatter_result["클래식"]],
+        ["오페라", scatter_result["오페라"]],
+        ["무용", scatter_result["무용"]],
+        ["국악", scatter_result["국악"]],
+        ["복합", scatter_result["복합"]]
+    ]
+    script += dashboard_scatter_relative(s_c_r_dataset)
+
     script += dashboard_line_year_accumulate([], [])
-    script += dashboard_bar_sale_for_day(week_sale_labels, week_sale_profit)
-    script += dashboard_line_year_tickt_accumulate([], [])
-    script += dashboard_bar_winner_rank([], [])
     script += dashboard_bar_show_count_rank([], [])
-    script += dashboard_scatter_relative([], [])
+
     html = style + dashboard_markup() + script
 
-    components.html(html, width=1500, height=800)
+    components.html(html, width=2800, height=900)
