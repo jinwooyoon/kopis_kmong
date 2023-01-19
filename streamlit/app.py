@@ -166,7 +166,7 @@ def dashboard_doughnut_ticket_profit_share(label, data):
         data: {
             labels: """ + str(label) +""",
             datasets: [{
-                label: '판매액 점유율',
+                label: '관객 점유율',
                 data: """ + str(data) + """,
             }]
         },
@@ -179,7 +179,7 @@ def dashboard_doughnut_ticket_profit_share(label, data):
                 },
                 title: {
                     display: true,
-                    text: '판매액 점유율'
+                    text: '관객 점유율'
                 }
             }
         },
@@ -196,7 +196,7 @@ def dashboard_doughnut_ticket_audience_share(label, data):
         data: {
             labels: """ + str(label) +""",
             datasets: [{
-                label: '관객 점유율',
+                label: '판매액 점유율',
                 data: """ + str(data) + """,
             }]
         },
@@ -209,7 +209,7 @@ def dashboard_doughnut_ticket_audience_share(label, data):
                 },
                 title: {
                     display: true,
-                    text: '관객 점유율'
+                    text: '판매액 점유율'
                 }
             }
         },
@@ -328,8 +328,9 @@ def dashboard_bar_winner_rank(label, data):
         data: {
             labels: """+ str(label) + """,
             datasets: [{
-                label: '공연장 별 수상작 공연 횟수 랭킹',
+                label: '서울시 뮤지컬 공연 횟수 순위',
                 data: """ + str(data) + """,
+                backgroundColor: ["rgba(54, 162, 235, 0.5)","rgba(255, 99, 132, 0.5)","rgba(54, 162, 235, 0.5)","rgba(54, 162, 235, 0.5)","rgba(54, 162, 235, 0.5)","rgba(255, 99, 132, 0.5)","rgba(54, 162, 235, 0.5)","rgba(54, 162, 235, 0.5)","rgba(54, 162, 235, 0.5)","rgba(54, 162, 235, 0.5)"],
                 borderWidth: 1
             }]
         },
@@ -423,26 +424,20 @@ performance_list = pd.read_json("../data/performance_list.json")
 performance_ranking = pd.read_json("../data/performance_ranking.json")
 festival_list = pd.read_json("../data/festival_list.json")
 
-new_year_data = open_json_file("../new_data/performance_years_data.json")
-year_data = open_json_file("../data/performance_years_data.json")
-statistics_data = open_json_file("../new_data/statistics_data.json")
-daily_ticket_sales = open_json_file("../new_data/daily_ticket_sales.json")
-day_ticket_counter = open_json_file("../new_data/day_ticket_counter.json")
+new_year_data = open_json_file("../data/performance_years_data.json")
+statistics_data = open_json_file("../data/statistics_data.json")
+daily_ticket_sales = open_json_file("../data/daily_ticket_sales.json")
+day_ticket_counter = open_json_file("../data/day_ticket_counter.json")
 count_by_hall_rank = open_json_file("../data/count_by_hall_ranking.json")
-whole_seoul_musical = open_json_file("../new_data/whole_seoul_musical.json")
+whole_seoul_musical = open_json_file("../data/whole_seoul_musical.json")
 scatter_result = open_json_file("../data/scatter_result.json")
-
-performance_count = pd.read_json("../data/performance_years_data.json")
-performance_count.rename(index={"year2016": "2016", "year2017": "2017", "year2018": "2018",
-                         "year2019": "2019", "year2020": "2020", "year2021": "2021"}, inplace=True)
-
 
 performance_list.drop_duplicates()
 st.set_page_config(layout="wide")
 
 
 with st.sidebar:
-    choose = option_menu("공연 정보", ["INFORMATION", "공연 목록", "예매 랭킹", "축제 목록", "공연 차트","대시보드"],
+    choose = option_menu("공연 정보", ["KRPNS", "공연 목록", "예매 랭킹", "축제 목록","대시보드"],
                          icons=['lightbulb', 'list-ul', 'list-ol',
                                 'list-stars','graph-up-arrow'],
                          menu_icon="app-indicator", default_index=0,
@@ -454,6 +449,9 @@ with st.sidebar:
     }
     )
 
+if choose == "KRPNS":
+    image = Image.open('../image/krpns.jpg')
+    st.image(image,use_column_width="auto")
 
 if choose == "공연 목록":
 
@@ -558,198 +556,6 @@ if choose == "축제 목록":
     st.write(festival_list.to_html(escape=False, index=False, col_space=[
              490, 90, 360, 127, 127, 110, 70], justify='center'), unsafe_allow_html=True)
 
-
-if choose == "공연 차트":
-
-    with st.sidebar:
-        choice = st.selectbox(
-            "지역별 분류",
-            ("년도별 공연 누적 진행율", "장르별 공연 예매 상황"))
-
-    if choice == "년도별 공연 누적 진행율":
-        with st.sidebar:
-            region_selectbox = st.selectbox(
-                "지역별 분류",
-                ("전국", "서울", "부산", "대구", "인천", "광주", "대전", "울산", "세종", "경기", "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주"))
-
-        html = """<div>
-    <canvas id="myChart"></canvas>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script>
-    const ctx = document.getElementById('myChart');
-
-    new Chart(ctx, {{
-        type: 'line',
-        data: {{
-        labels : ["2016","2017","2018","2019","2020","2021","2022","2023"],
-        datasets: [{{
-            label: '연극',
-            data: {actor_data},
-            borderColor: 'rgb(251, 37, 118)',
-            backgroundColor: 'rgb(255, 255 ,255)',
-            borderWidth: 2
-        }},
-        {{
-            label: '뮤지컬',
-            data: {musical_data},
-            borderWidth: 2,
-            backgroundColor: 'rgb(255, 255 ,255)',
-            borderColor: 'rgb(63, 0, 113)'
-            
-            
-        }},
-        {{
-            label: '클래식',
-            data: {classic_data},
-            borderWidth: 2,
-            backgroundColor: 'rgb(255, 255 ,255)',
-            borderColor: 'rgb(198, 155, 123)'
-            
-        }},
-        {{
-            label: '오페라',
-            data: {opera_data},
-            borderColor: 'rgb(149, 1, 1)',
-            backgroundColor: 'rgb(255, 255 ,255)',
-            borderWidth: 2
-            
-        }},
-        {{
-            label: '무용',
-            data: {dance_data},
-            borderColor: 'rgb(62, 109, 156)',
-            backgroundColor: 'rgb(255, 255 ,255)',
-            borderWidth: 2
-            
-        }},
-        {{
-            label: '국악',
-            data: {korean_classical_data},
-            borderColor: 'rgb(210, 0, 26)',
-            backgroundColor: 'rgb(255, 255 ,255)',
-            borderWidth: 2
-            
-        }},
-        {{
-            label: '복합',
-            data: {complex_data},
-            borderColor: 'rgb(0, 0, 0)',
-            backgroundColor: 'rgb(255, 255 ,255)',
-            borderWidth: 2
-            
-        }}]}},
-        options: {{
-            scales: {{
-                
-            y: {{
-            beginAtZero: true
-            }}
-        }}
-        }}
-    }});
-
-    </script>
-    
-        """.format(actor_data=list(year_data[region_selectbox]['연극'].values()), musical_data=list(year_data[region_selectbox]['뮤지컬'].values()), classic_data=list(year_data[region_selectbox]['클래식'].values()), opera_data=list(year_data[region_selectbox]['오페라'].values()),
-                   dance_data=list(year_data[region_selectbox]['무용'].values()), korean_classical_data=list(year_data[region_selectbox]['국악'].values()), complex_data=list(year_data[region_selectbox]['복합'].values()))
-
-        components.html(html, width=1000, height=1000)
-
-    if choice == "장르별 공연 예매 상황":
-        with st.sidebar:
-            ticket_selectbox = st.selectbox(
-                "티켓 분류",
-                ("티켓판매액", "티켓판매수"))
-
-        html = """<div>
-    <canvas id="myChart"></canvas>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script>
-    const ctx = document.getElementById('myChart');
-
-    new Chart(ctx, {{
-        type: 'line',
-        data: {{
-        labels : ["2016","2017","2018","2019","2020","2021","2022","2023"],
-        datasets: [{{
-            label: '연극',
-            data: {actor_data},
-            borderColor: 'rgb(251, 37, 118)',
-            backgroundColor: 'rgb(255, 255 ,255)',
-            borderWidth: 2
-        }},
-        {{
-            label: '뮤지컬',
-            data: {musical_data},
-            borderWidth: 2,
-            backgroundColor: 'rgb(255, 255 ,255)',
-            borderColor: 'rgb(63, 0, 113)'
-            
-            
-        }},
-        {{
-            label: '클래식',
-            data: {classic_data},
-            borderWidth: 2,
-            backgroundColor: 'rgb(255, 255 ,255)',
-            borderColor: 'rgb(198, 155, 123)'
-            
-        }},
-        {{
-            label: '오페라',
-            data: {opera_data},
-            borderColor: 'rgb(149, 1, 1)',
-            backgroundColor: 'rgb(255, 255 ,255)',
-            borderWidth: 2
-            
-        }},
-        {{
-            label: '무용',
-            data: {dance_data},
-            borderColor: 'rgb(62, 109, 156)',
-            backgroundColor: 'rgb(255, 255 ,255)',
-            borderWidth: 2
-            
-        }},
-        {{
-            label: '국악',
-            data: {korean_classical_data},
-            borderColor: 'rgb(210, 0, 26)',
-            backgroundColor: 'rgb(255, 255 ,255)',
-            borderWidth: 2
-            
-        }},
-        {{
-            label: '복합',
-            data: {complex_data},
-            borderColor: 'rgb(0, 0, 0)',
-            backgroundColor: 'rgb(255, 255 ,255)',
-            borderWidth: 2
-            
-        }}]}},
-        options: {{
-            scales: {{
-                
-            y: {{
-            beginAtZero: true
-            }}
-        }}
-        }}
-    }});
-
-    </script>
-    
-        """.format(actor_data=list(statistics_data[ticket_selectbox]['연극'].values()), musical_data=list(statistics_data[ticket_selectbox]['뮤지컬'].values()), classic_data=list(statistics_data[ticket_selectbox]['클래식'].values()), opera_data=list(statistics_data[ticket_selectbox]['오페라'].values()),
-                   dance_data=list(statistics_data[ticket_selectbox]['무용'].values()), korean_classical_data=list(statistics_data[ticket_selectbox]['국악'].values()), complex_data=list(statistics_data[ticket_selectbox]['복합'].values()))
-
-        components.html(html, width=1000, height=1000)
-
 if choose == "대시보드":
 
     style = dashboard_style()
@@ -761,9 +567,9 @@ if choose == "대시보드":
     d_t_s_profit = daily_ticket_sales["티켓판매액"]
     script += dashboard_bar_ticket_sale_profit(d_t_s_lables, d_t_s_profit)
 
-    d_t_s_profit_share = daily_ticket_sales["티켓점유율"]
+    d_t_s_profit_share = daily_ticket_sales["관객점유율"]
     script += dashboard_doughnut_ticket_profit_share(d_t_s_lables, d_t_s_profit_share)
-    d_t_s_audience_share = daily_ticket_sales["관객점유율"]
+    d_t_s_audience_share = daily_ticket_sales["티켓점유율"]
     script += dashboard_doughnut_ticket_audience_share(d_t_s_lables, d_t_s_audience_share)
 
 
@@ -817,7 +623,7 @@ if choose == "대시보드":
             location_list.append(location)
     with st.sidebar:
         choice = st.selectbox(
-            "지역별 분류",
+            "년도별 공연 누적 현황",
             location_list
         )
         select_data = new_year_data[choice]

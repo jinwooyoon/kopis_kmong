@@ -1,0 +1,185 @@
+
+Collecting usage statistics. To deactivate, set browser.gatherUsageStats to False.
+
+
+  You can now view your Streamlit app in your browser.
+
+  Network URL: http://172.26.9.227:8502
+  External URL: http://3.39.255.123:8502
+
+
+Collecting usage statistics. To deactivate, set browser.gatherUsageStats to False.
+
+
+  You can now view your Streamlit app in your browser.
+
+  Network URL: http://172.26.9.227:8503
+  External URL: http://3.39.255.123:8503
+
+
+Collecting usage statistics. To deactivate, set browser.gatherUsageStats to False.
+
+
+  You can now view your Streamlit app in your browser.
+
+  Network URL: http://172.26.9.227:80
+  External URL: http://3.39.255.123:80
+
+2022-12-21 16:31:27.807 Uncaught app exception
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/streamlit/runtime/scriptrunner/script_runner.py", line 565, in _run_script
+    exec(code, module.__dict__)
+  File "/home/ubuntu/project/streamlit/app.py", line 76, in <module>
+    performance_list = performance_list.query(
+  File "/usr/local/lib/python3.8/dist-packages/pandas/util/_decorators.py", line 331, in wrapper
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/frame.py", line 4471, in query
+    res = self.eval(expr, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/util/_decorators.py", line 331, in wrapper
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/frame.py", line 4609, in eval
+    return _eval(expr, inplace=inplace, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/eval.py", line 353, in eval
+    parsed_expr = Expr(expr, engine=engine, parser=parser, env=env)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/expr.py", line 813, in __init__
+    self.terms = self.parse()
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/expr.py", line 832, in parse
+    return self._visitor.visit(self.expr)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/expr.py", line 415, in visit
+    return visitor(node, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/expr.py", line 421, in visit_Module
+    return self.visit(expr, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/expr.py", line 415, in visit
+    return visitor(node, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/expr.py", line 424, in visit_Expr
+    return self.visit(node.value, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/expr.py", line 415, in visit
+    return visitor(node, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/expr.py", line 709, in visit_Call
+    name = self.env.add_tmp(res(*new_args, **kwargs))
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/strings/accessor.py", line 129, in wrapper
+    return func(self, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/strings/accessor.py", line 1252, in contains
+    if regex and re.compile(pat).groups:
+  File "/usr/lib/python3.8/re.py", line 252, in compile
+    return _compile(pattern, flags)
+  File "/usr/lib/python3.8/re.py", line 304, in _compile
+    p = sre_compile.compile(pattern, flags)
+  File "/usr/lib/python3.8/sre_compile.py", line 764, in compile
+    p = sre_parse.parse(p, flags)
+  File "/usr/lib/python3.8/sre_parse.py", line 948, in parse
+    p = _parse_sub(source, state, flags & SRE_FLAG_VERBOSE, 0)
+  File "/usr/lib/python3.8/sre_parse.py", line 443, in _parse_sub
+    itemsappend(_parse(source, state, verbose, nested + 1,
+  File "/usr/lib/python3.8/sre_parse.py", line 549, in _parse
+    raise source.error("unterminated character set",
+re.error: unterminated character set at position 0
+2022-12-21 16:31:29.059 Uncaught app exception
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/streamlit/runtime/scriptrunner/script_runner.py", line 565, in _run_script
+    exec(code, module.__dict__)
+  File "/home/ubuntu/project/streamlit/app.py", line 76, in <module>
+    performance_list = performance_list.query(
+  File "/usr/local/lib/python3.8/dist-packages/pandas/util/_decorators.py", line 331, in wrapper
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/frame.py", line 4471, in query
+    res = self.eval(expr, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/util/_decorators.py", line 331, in wrapper
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/frame.py", line 4609, in eval
+    return _eval(expr, inplace=inplace, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/eval.py", line 353, in eval
+    parsed_expr = Expr(expr, engine=engine, parser=parser, env=env)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/expr.py", line 813, in __init__
+    self.terms = self.parse()
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/expr.py", line 832, in parse
+    return self._visitor.visit(self.expr)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/expr.py", line 415, in visit
+    return visitor(node, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/expr.py", line 421, in visit_Module
+    return self.visit(expr, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/expr.py", line 415, in visit
+    return visitor(node, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/expr.py", line 424, in visit_Expr
+    return self.visit(node.value, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/expr.py", line 415, in visit
+    return visitor(node, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/expr.py", line 709, in visit_Call
+    name = self.env.add_tmp(res(*new_args, **kwargs))
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/strings/accessor.py", line 129, in wrapper
+    return func(self, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/strings/accessor.py", line 1252, in contains
+    if regex and re.compile(pat).groups:
+  File "/usr/lib/python3.8/re.py", line 252, in compile
+    return _compile(pattern, flags)
+  File "/usr/lib/python3.8/re.py", line 304, in _compile
+    p = sre_compile.compile(pattern, flags)
+  File "/usr/lib/python3.8/sre_compile.py", line 764, in compile
+    p = sre_parse.parse(p, flags)
+  File "/usr/lib/python3.8/sre_parse.py", line 948, in parse
+    p = _parse_sub(source, state, flags & SRE_FLAG_VERBOSE, 0)
+  File "/usr/lib/python3.8/sre_parse.py", line 443, in _parse_sub
+    itemsappend(_parse(source, state, verbose, nested + 1,
+  File "/usr/lib/python3.8/sre_parse.py", line 549, in _parse
+    raise source.error("unterminated character set",
+re.error: unterminated character set at position 0
+2022-12-21 16:31:30.164 Uncaught app exception
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/streamlit/runtime/scriptrunner/script_runner.py", line 565, in _run_script
+    exec(code, module.__dict__)
+  File "/home/ubuntu/project/streamlit/app.py", line 76, in <module>
+    performance_list = performance_list.query(
+  File "/usr/local/lib/python3.8/dist-packages/pandas/util/_decorators.py", line 331, in wrapper
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/frame.py", line 4471, in query
+    res = self.eval(expr, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/util/_decorators.py", line 331, in wrapper
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/frame.py", line 4609, in eval
+    return _eval(expr, inplace=inplace, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/eval.py", line 353, in eval
+    parsed_expr = Expr(expr, engine=engine, parser=parser, env=env)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/expr.py", line 813, in __init__
+    self.terms = self.parse()
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/expr.py", line 832, in parse
+    return self._visitor.visit(self.expr)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/expr.py", line 415, in visit
+    return visitor(node, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/expr.py", line 421, in visit_Module
+    return self.visit(expr, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/expr.py", line 415, in visit
+    return visitor(node, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/expr.py", line 424, in visit_Expr
+    return self.visit(node.value, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/expr.py", line 415, in visit
+    return visitor(node, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/computation/expr.py", line 709, in visit_Call
+    name = self.env.add_tmp(res(*new_args, **kwargs))
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/strings/accessor.py", line 129, in wrapper
+    return func(self, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/pandas/core/strings/accessor.py", line 1252, in contains
+    if regex and re.compile(pat).groups:
+  File "/usr/lib/python3.8/re.py", line 252, in compile
+    return _compile(pattern, flags)
+  File "/usr/lib/python3.8/re.py", line 304, in _compile
+    p = sre_compile.compile(pattern, flags)
+  File "/usr/lib/python3.8/sre_compile.py", line 764, in compile
+    p = sre_parse.parse(p, flags)
+  File "/usr/lib/python3.8/sre_parse.py", line 948, in parse
+    p = _parse_sub(source, state, flags & SRE_FLAG_VERBOSE, 0)
+  File "/usr/lib/python3.8/sre_parse.py", line 443, in _parse_sub
+    itemsappend(_parse(source, state, verbose, nested + 1,
+  File "/usr/lib/python3.8/sre_parse.py", line 549, in _parse
+    raise source.error("unterminated character set",
+re.error: unterminated character set at position 0
+2023-01-03 00:11:58.476 MediaFileHandler: Missing file wp-includes/wlwmanifest.xml
+  Stopping...
+
+Collecting usage statistics. To deactivate, set browser.gatherUsageStats to False.
+
+
+  You can now view your Streamlit app in your browser.
+
+  Network URL: http://172.26.9.227:8501
+  External URL: http://3.39.255.123:8501
+
